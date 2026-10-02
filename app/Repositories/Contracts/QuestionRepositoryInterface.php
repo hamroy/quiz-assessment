@@ -13,4 +13,10 @@ interface QuestionRepositoryInterface
     public function create(array $data): Question;
 
     public function maxOrder(Quiz $quiz): int;
+
+    public function update(Question $question, array $data): Question;
+
+    public function delete(Question $question): void;
+
+    public function findById(int $id): Question;
 }

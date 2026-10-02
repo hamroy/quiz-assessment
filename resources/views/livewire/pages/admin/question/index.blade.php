@@ -9,6 +9,8 @@ new #[Layout('layouts.app')] class extends Component
 {
     public Quiz $quiz;
 
+    public string $deleteError = '';
+
     public function mount(Quiz $quiz): void
     {
         $this->quiz = $quiz;
@@ -19,6 +21,12 @@ new #[Layout('layouts.app')] class extends Component
         return [
             'questions' => app(QuestionService::class)->listForQuiz($this->quiz),
         ];
+    }
+
+    public function delete(int $questionId, QuestionService $service): void
+    {
+        $service->delete($service->findById($questionId));
+        $this->deleteError = '';
     }
 }; ?>
 
@@ -43,6 +51,10 @@ new #[Layout('layouts.app')] class extends Component
                             </a>
                         </div>
                     </div>
+
+                    @if ($deleteError)
+                        <p class="mb-4 text-sm text-red-600 dark:text-red-400">{{ $deleteError }}</p>
+                    @endif
 
                     @if ($questions->isEmpty())
                         <p class="text-gray-500 dark:text-gray-400 py-8 text-center">
@@ -69,7 +81,10 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->points }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->order }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->answer_options_count }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium"></td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                                                <a href="{{ route('admin.questions.edit', ['quiz' => $quiz, 'question' => $question]) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+                                                <button type="button" wire:click="delete({{ $question->id }})" wire:confirm="Delete this question?" class="ms-3 text-red-600 hover:text-red-900 dark:text-red-400">Delete</button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

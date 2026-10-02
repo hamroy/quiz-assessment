@@ -26,4 +26,21 @@ final class QuestionRepository implements QuestionRepositoryInterface
     {
         return (int) ($quiz->questions()->max('order') ?? 0);
     }
+
+    public function update(Question $question, array $data): Question
+    {
+        $question->update($data);
+
+        return $question->refresh();
+    }
+
+    public function delete(Question $question): void
+    {
+        $question->delete();
+    }
+
+    public function findById(int $id): Question
+    {
+        return Question::query()->findOrFail($id);
+    }
 }

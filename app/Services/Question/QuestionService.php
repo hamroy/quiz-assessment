@@ -34,4 +34,24 @@ final class QuestionService
             'order' => $data['order'] ?? $this->nextOrder($quiz),
         ]);
     }
+
+    public function update(Question $question, array $data): Question
+    {
+        return $this->repository->update($question, [
+            'question' => $data['question'],
+            'type' => $data['type'],
+            'points' => $data['points'],
+            'order' => $data['order'],
+        ]);
+    }
+
+    public function delete(Question $question): void
+    {
+        $this->repository->delete($question);
+    }
+
+    public function findById(int $id): Question
+    {
+        return $this->repository->findById($id);
+    }
 }
