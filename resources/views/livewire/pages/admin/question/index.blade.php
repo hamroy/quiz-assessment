@@ -32,10 +32,16 @@ new #[Layout('layouts.app')] class extends Component
                             <h2 class="font-semibold text-xl">Questions</h2>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $quiz->title }}</p>
                         </div>
-                        <a href="{{ route('admin.quizzes.index') }}" wire:navigate
-                            class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
-                            Back to Quizzes
-                        </a>
+                        <div class="flex items-center gap-4">
+                            <a href="{{ route('admin.questions.create', $quiz) }}" wire:navigate
+                                class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                Add Question
+                            </a>
+                            <a href="{{ route('admin.quizzes.index') }}" wire:navigate
+                                class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                Back to Quizzes
+                            </a>
+                        </div>
                     </div>
 
                     @if ($questions->isEmpty())
