@@ -102,6 +102,7 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $quiz->created_at->format('Y-m-d') }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('admin.quizzes.edit', $quiz) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+                                                <a href="{{ route('admin.questions.index', $quiz) }}" wire:navigate class="ms-3 text-sky-600 hover:text-sky-900 dark:text-sky-400">Questions</a>
 
                                                 @if ($quiz->status === 'published')
                                                     <button type="button" wire:click="archive({{ $quiz->id }})" wire:confirm="Archive this quiz?" class="ms-3 text-yellow-600 hover:text-yellow-900 dark:text-yellow-400">Archive</button>
