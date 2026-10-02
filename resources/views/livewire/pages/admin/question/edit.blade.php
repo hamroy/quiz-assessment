@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\QuestionType;
+use App\Services\AnswerOption\AnswerOptionService;
 use App\Services\Question\QuestionService;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -27,6 +28,15 @@ new #[Layout('layouts.app')] class extends Component
         $this->type = $questionModel->type;
         $this->points = $questionModel->points;
         $this->order = $questionModel->order;
+    }
+
+    public function with(): array
+    {
+        return [
+            'options' => app(AnswerOptionService::class)->listForQuestion(
+                app(QuestionService::class)->findById($this->questionId),
+            ),
+        ];
     }
 
     public function save(QuestionService $service): void
@@ -57,6 +67,10 @@ new #[Layout('layouts.app')] class extends Component
                             <a href="{{ route('admin.answer-options.create', ['quiz' => $quizId, 'question' => $questionId]) }}" wire:navigate
                                 class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                 Add Answer Option
+                            </a>
+                            <a href="{{ route('admin.questions.view', ['quiz' => $quizId, 'question' => $questionId]) }}" wire:navigate
+                                class="text-sm text-sky-600 hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-300">
+                                View
                             </a>
                             <a href="{{ route('admin.questions.index', $quizId) }}" wire:navigate
                                 class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
@@ -119,6 +133,25 @@ new #[Layout('layouts.app')] class extends Component
                             </button>
                         </div>
                     </form>
+
+                    <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <h3 class="font-semibold text-lg mb-4">Answer Options</h3>
+                        <div class="space-y-2">
+                            @forelse ($options as $option)
+                                <div class="flex items-center justify-between rounded-md border px-3 py-2
+                                    @if ($option->is_correct) border-green-500 bg-green-50 dark:bg-green-900/20 dark:border-green-500 @else border-gray-200 dark:border-gray-700 @endif">
+                                    <span class="text-sm @if ($option->is_correct) font-semibold text-green-700 dark:text-green-400 @else text-gray-900 dark:text-gray-100 @endif">
+                                        {{ $option->option_text }}
+                                    </span>
+                                    @if ($option->is_correct)
+                                        <span class="text-xs font-semibold text-green-700 dark:text-green-400">✓ Correct</span>
+                                    @endif
+                                </div>
+                            @empty
+                                <span class="text-gray-400 dark:text-gray-500">No answer options yet.</span>
+                            @endforelse
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

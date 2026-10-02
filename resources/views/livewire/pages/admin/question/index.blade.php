@@ -93,7 +93,8 @@ new #[Layout('layouts.app')] class extends Component
                                                 @endforelse
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('admin.questions.edit', ['quiz' => $quiz, 'question' => $question]) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+                                                <a href="{{ route('admin.questions.view', ['quiz' => $quiz, 'question' => $question]) }}" wire:navigate class="text-sky-600 hover:text-sky-900 dark:text-sky-400">View</a>
+                                                <a href="{{ route('admin.questions.edit', ['quiz' => $quiz, 'question' => $question]) }}" wire:navigate class="ms-3 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
                                                 <button type="button" wire:click="delete({{ $question->id }})" wire:confirm="Delete this question?" class="ms-3 text-red-600 hover:text-red-900 dark:text-red-400">Delete</button>
                                             </td>
                                         </tr>

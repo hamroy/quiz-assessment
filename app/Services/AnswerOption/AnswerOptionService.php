@@ -5,6 +5,7 @@ namespace App\Services\AnswerOption;
 use App\Models\AnswerOption;
 use App\Models\Question;
 use App\Repositories\Contracts\AnswerOptionRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 final class AnswerOptionService
 {
@@ -16,6 +17,11 @@ final class AnswerOptionService
     public function nextOrder(Question $question): int
     {
         return $this->repository->maxOrder($question) + 1;
+    }
+
+    public function listForQuestion(Question $question): Collection
+    {
+        return $this->repository->listForQuestion($question);
     }
 
     public function create(Question $question, array $data): AnswerOption
