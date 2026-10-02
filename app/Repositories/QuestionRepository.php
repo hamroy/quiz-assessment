@@ -12,6 +12,7 @@ final class QuestionRepository implements QuestionRepositoryInterface
     public function listForQuiz(Quiz $quiz): LengthAwarePaginator
     {
         return $quiz->questions()
+            ->with(['answerOptions' => fn ($query) => $query->orderBy('order')])
             ->withCount('answerOptions')
             ->orderBy('order')
             ->paginate(12);

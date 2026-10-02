@@ -80,7 +80,18 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ ucfirst(str_replace('_', ' ', $question->type)) }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->points }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->order }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $question->answer_options_count }}</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                                                @forelse ($question->answerOptions as $option)
+                                                    <div class="@if ($option->is_correct) font-semibold text-green-600 dark:text-green-400 @endif">
+                                                        {{ $option->option_text }}
+                                                        @if ($option->is_correct)
+                                                            <span class="text-xs">(correct)</span>
+                                                        @endif
+                                                    </div>
+                                                @empty
+                                                    <span class="text-gray-400 dark:text-gray-500">No options</span>
+                                                @endforelse
+                                            </td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('admin.questions.edit', ['quiz' => $quiz, 'question' => $question]) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
                                                 <button type="button" wire:click="delete({{ $question->id }})" wire:confirm="Delete this question?" class="ms-3 text-red-600 hover:text-red-900 dark:text-red-400">Delete</button>
