@@ -24,4 +24,7 @@ Route::prefix('admin')
 
         Volt::route('quizzes/{quiz}/questions/{question}/edit', 'pages.admin.question.edit')
             ->name('questions.edit');
+
+        Volt::route('quizzes/{quiz}/questions/{question}/answer-options/create', 'pages.admin.answer-option.create')
+            ->name('answer-options.create');
     });

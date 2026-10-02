@@ -53,10 +53,16 @@ new #[Layout('layouts.app')] class extends Component
                         <div>
                             <h2 class="font-semibold text-xl">Edit Question</h2>
                         </div>
-                        <a href="{{ route('admin.questions.index', $quizId) }}" wire:navigate
-                            class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
-                            Back to Questions
-                        </a>
+                        <div class="flex items-center gap-4">
+                            <a href="{{ route('admin.answer-options.create', ['quiz' => $quizId, 'question' => $questionId]) }}" wire:navigate
+                                class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                Add Answer Option
+                            </a>
+                            <a href="{{ route('admin.questions.index', $quizId) }}" wire:navigate
+                                class="text-sm text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                Back to Questions
+                            </a>
+                        </div>
                     </div>
 
                     <form wire:submit="save" class="space-y-6">
