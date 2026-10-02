@@ -48,6 +48,11 @@ final class QuizRepository implements QuizRepositoryInterface
         return $quiz->attempts()->exists();
     }
 
+    public function hasQuestions(Quiz $quiz): bool
+    {
+        return $quiz->questions()->exists();
+    }
+
     public function list(array $with = [], array $withCount = []): LengthAwarePaginator
     {
         return Quiz::query()

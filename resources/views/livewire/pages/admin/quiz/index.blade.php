@@ -8,6 +8,8 @@ new #[Layout('layouts.app')] class extends Component
 {
     public string $deleteError = '';
 
+    public string $publishError = '';
+
     /**
      * Provide the paginated quiz list to the view.
      *
@@ -29,6 +31,22 @@ new #[Layout('layouts.app')] class extends Component
         } catch (\DomainException $e) {
             $this->deleteError = $e->getMessage();
         }
+    }
+
+    public function publish(int $quizId, QuizService $service): void
+    {
+        try {
+            $service->publish($service->findById($quizId));
+            $this->publishError = '';
+        } catch (\DomainException $e) {
+            $this->publishError = $e->getMessage();
+        }
+    }
+
+    public function archive(int $quizId, QuizService $service): void
+    {
+        $service->archive($service->findById($quizId));
+        $this->publishError = '';
     }
 }; ?>
 
@@ -52,6 +70,9 @@ new #[Layout('layouts.app')] class extends Component
                     @else
                         @if ($deleteError)
                             <p class="mb-4 text-sm text-red-600 dark:text-red-400">{{ $deleteError }}</p>
+                        @endif
+                        @if ($publishError)
+                            <p class="mb-4 text-sm text-red-600 dark:text-red-400">{{ $publishError }}</p>
                         @endif
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -82,12 +103,16 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('admin.quizzes.edit', $quiz) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
 
+                                                @if ($quiz->status === 'published')
+                                                    <button type="button" wire:click="archive({{ $quiz->id }})" wire:confirm="Archive this quiz?" class="ms-3 text-yellow-600 hover:text-yellow-900 dark:text-yellow-400">Archive</button>
+                                                @else
+                                                    <button type="button" wire:click="publish({{ $quiz->id }})" class="ms-3 text-green-600 hover:text-green-900 dark:text-green-400">Publish</button>
+                                                @endif
+
                                                 <button
                                                     type="button"
-                                                    x-confirm="Delete this quiz?"
-                                                    x-confirm-title="Delete"
-                                                    x-confirm-variant="danger"
                                                     wire:click="delete({{ $quiz->id }})"
+                                                    wire:confirm="Delete this quiz?"
                                                     class="ms-3 text-red-600 hover:text-red-900"
                                                 >
                                                     Delete

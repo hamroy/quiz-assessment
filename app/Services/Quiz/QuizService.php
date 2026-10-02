@@ -49,6 +49,25 @@ final class QuizService
         $this->repository->delete($quiz);
     }
 
+    public function publish(Quiz $quiz): Quiz
+    {
+        if (! $this->repository->hasQuestions($quiz)) {
+            throw new \DomainException('Quiz must have at least one question to be published.');
+        }
+
+        return $this->repository->update($quiz, [
+            'status' => QuizStatus::Published->value,
+            'published_at' => now(),
+        ]);
+    }
+
+    public function archive(Quiz $quiz): Quiz
+    {
+        return $this->repository->update($quiz, [
+            'status' => QuizStatus::Archived->value,
+        ]);
+    }
+
     public function list(): LengthAwarePaginator
     {
         return $this->repository->list([], ['questions']);
