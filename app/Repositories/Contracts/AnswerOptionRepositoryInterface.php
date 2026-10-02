@@ -13,4 +13,10 @@ interface AnswerOptionRepositoryInterface
     public function maxOrder(Question $question): int;
 
     public function listForQuestion(Question $question): Collection;
+
+    public function findById(int $id): AnswerOption;
+
+    public function update(AnswerOption $option, array $data): AnswerOption;
+
+    public function delete(AnswerOption $option): void;
 }

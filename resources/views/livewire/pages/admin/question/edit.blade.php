@@ -52,6 +52,11 @@ new #[Layout('layouts.app')] class extends Component
 
         $this->redirectRoute('admin.questions.index', ['quiz' => $this->quizId], navigate: true);
     }
+
+    public function deleteOption(int $optionId, AnswerOptionService $service): void
+    {
+        $service->delete($service->findById($optionId));
+    }
 }; ?>
 
 <div>
@@ -143,9 +148,13 @@ new #[Layout('layouts.app')] class extends Component
                                     <span class="text-sm @if ($option->is_correct) font-semibold text-green-700 dark:text-green-400 @else text-gray-900 dark:text-gray-100 @endif">
                                         {{ $option->option_text }}
                                     </span>
-                                    @if ($option->is_correct)
-                                        <span class="text-xs font-semibold text-green-700 dark:text-green-400">✓ Correct</span>
-                                    @endif
+                                    <span class="flex items-center gap-3">
+                                        @if ($option->is_correct)
+                                            <span class="text-xs font-semibold text-green-700 dark:text-green-400">✓ Correct</span>
+                                        @endif
+                                        <a href="{{ route('admin.answer-options.edit', ['quiz' => $quizId, 'question' => $questionId, 'answerOption' => $option->id]) }}" wire:navigate class="text-xs text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+                                        <button type="button" wire:click="deleteOption({{ $option->id }})" wire:confirm="Delete this option?" class="text-xs text-red-600 hover:text-red-900 dark:text-red-400">Delete</button>
+                                    </span>
                                 </div>
                             @empty
                                 <span class="text-gray-400 dark:text-gray-500">No answer options yet.</span>

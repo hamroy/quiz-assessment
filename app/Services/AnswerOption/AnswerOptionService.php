@@ -33,4 +33,23 @@ final class AnswerOptionService
             'order' => $data['order'] ?? $this->nextOrder($question),
         ]);
     }
+
+    public function findById(int $id): AnswerOption
+    {
+        return $this->repository->findById($id);
+    }
+
+    public function update(AnswerOption $option, array $data): AnswerOption
+    {
+        return $this->repository->update($option, [
+            'option_text' => $data['option_text'],
+            'is_correct' => $data['is_correct'] ?? false,
+            'order' => $data['order'],
+        ]);
+    }
+
+    public function delete(AnswerOption $option): void
+    {
+        $this->repository->delete($option);
+    }
 }

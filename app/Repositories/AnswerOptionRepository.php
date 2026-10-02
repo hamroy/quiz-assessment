@@ -23,4 +23,21 @@ final class AnswerOptionRepository implements AnswerOptionRepositoryInterface
     {
         return $question->answerOptions()->orderBy('order')->get();
     }
+
+    public function findById(int $id): AnswerOption
+    {
+        return AnswerOption::query()->findOrFail($id);
+    }
+
+    public function update(AnswerOption $option, array $data): AnswerOption
+    {
+        $option->update($data);
+
+        return $option->refresh();
+    }
+
+    public function delete(AnswerOption $option): void
+    {
+        $option->delete();
+    }
 }
