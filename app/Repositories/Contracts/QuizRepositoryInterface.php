@@ -19,5 +19,7 @@ interface QuizRepositoryInterface
 
     public function delete(Quiz $quiz): void;
 
+    public function hasAttempts(Quiz $quiz): bool;
+
     public function list(array $with = [], array $withCount = []): LengthAwarePaginator;
 }

@@ -43,6 +43,11 @@ final class QuizRepository implements QuizRepositoryInterface
         $quiz->delete();
     }
 
+    public function hasAttempts(Quiz $quiz): bool
+    {
+        return $quiz->attempts()->exists();
+    }
+
     public function list(array $with = [], array $withCount = []): LengthAwarePaginator
     {
         return Quiz::query()

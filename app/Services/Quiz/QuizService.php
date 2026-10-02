@@ -42,6 +42,10 @@ final class QuizService
 
     public function delete(Quiz $quiz): void
     {
+        if ($this->repository->hasAttempts($quiz)) {
+            throw new \DomainException('Quiz with attempts cannot be deleted.');
+        }
+
         $this->repository->delete($quiz);
     }
 

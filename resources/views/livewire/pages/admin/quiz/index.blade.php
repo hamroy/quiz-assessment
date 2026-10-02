@@ -6,6 +6,10 @@ use Livewire\Volt\Component;
 
 new #[Layout('layouts.app')] class extends Component
 {
+    public ?int $deletingId = null;
+
+    public string $deleteError = '';
+
     /**
      * Provide the paginated quiz list to the view.
      *
@@ -17,6 +21,33 @@ new #[Layout('layouts.app')] class extends Component
         return [
             'quizzes' => app(QuizService::class)->list(),
         ];
+    }
+
+    public function confirmDelete(int $quizId): void
+    {
+        $this->deletingId = $quizId;
+        $this->deleteError = '';
+    }
+
+    public function cancelDelete(): void
+    {
+        $this->deletingId = null;
+        $this->deleteError = '';
+    }
+
+    public function delete(QuizService $service): void
+    {
+        if ($this->deletingId === null) {
+            return;
+        }
+
+        try {
+            $service->delete($service->findById($this->deletingId));
+            $this->deletingId = null;
+            $this->deleteError = '';
+        } catch (\DomainException $e) {
+            $this->deleteError = $e->getMessage();
+        }
     }
 }; ?>
 
@@ -38,6 +69,9 @@ new #[Layout('layouts.app')] class extends Component
                             No quizzes yet.
                         </p>
                     @else
+                        @if ($deleteError)
+                            <p class="mb-4 text-sm text-red-600 dark:text-red-400">{{ $deleteError }}</p>
+                        @endif
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
@@ -66,6 +100,14 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $quiz->created_at->format('Y-m-d') }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('admin.quizzes.edit', $quiz) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+
+                                                @if ($deletingId === $quiz->id)
+                                                    <span class="ms-3 text-red-500">Delete this quiz?</span>
+                                                    <button wire:click="delete" class="ms-2 text-red-600 hover:text-red-900 font-semibold">Yes</button>
+                                                    <button wire:click="cancelDelete" class="ms-2 text-gray-500 hover:text-gray-700">No</button>
+                                                @else
+                                                    <button wire:click="confirmDelete({{ $quiz->id }})" class="ms-3 text-red-600 hover:text-red-900">Delete</button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
