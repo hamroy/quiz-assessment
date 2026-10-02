@@ -17,7 +17,7 @@ new #[Layout('layouts.app')] class extends Component
     public function save(QuizService $service): void
     {
         $validated = $this->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', 'unique:quizzes,title'],
             'description' => ['nullable', 'string'],
             'status' => ['required', Rule::enum(QuizStatus::class)],
         ]);

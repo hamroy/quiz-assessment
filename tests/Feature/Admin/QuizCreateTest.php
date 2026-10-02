@@ -64,7 +64,7 @@ class QuizCreateTest extends TestCase
             ->assertHasErrors(['status']);
     }
 
-    public function test_duplicate_title_gets_unique_slug(): void
+    public function test_duplicate_title_is_rejected(): void
     {
         $user = User::factory()->create();
 
@@ -74,11 +74,9 @@ class QuizCreateTest extends TestCase
             ->test('pages.admin.quiz.create')
             ->set('title', 'Same Title')
             ->set('status', 'draft')
-            ->call('save');
+            ->call('save')
+            ->assertHasErrors(['title' => 'unique']);
 
-        $this->assertDatabaseHas('quizzes', [
-            'title' => 'Same Title',
-            'slug' => 'same-title-2',
-        ]);
+        $this->assertSame(1, Quiz::query()->where('title', 'Same Title')->count());
     }
 }

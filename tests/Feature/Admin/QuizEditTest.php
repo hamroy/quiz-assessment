@@ -62,7 +62,7 @@ class QuizEditTest extends TestCase
         ]);
     }
 
-    public function test_updating_title_generates_new_unique_slug(): void
+    public function test_updating_title_to_duplicate_is_rejected(): void
     {
         $user = User::factory()->create();
 
@@ -72,12 +72,12 @@ class QuizEditTest extends TestCase
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
             ->set('title', 'Beta')
-            ->call('save');
+            ->call('save')
+            ->assertHasErrors(['title' => 'unique']);
 
         $this->assertDatabaseHas('quizzes', [
             'id' => $quiz->id,
-            'title' => 'Beta',
-            'slug' => 'beta-2',
+            'title' => 'Alpha',
         ]);
     }
 

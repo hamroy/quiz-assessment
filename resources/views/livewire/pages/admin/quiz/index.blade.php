@@ -55,9 +55,9 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $quiz->title }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                    @if ($quiz->status === 'published') bg-green-100 text-green-800
-                                                    @elseif ($quiz->status === 'archived') bg-red-100 text-red-800
-                                                    @else bg-yellow-100 text-yellow-800
+                                                    @if ($quiz->status === 'published') bg-green-500 text-white
+                                                    @elseif ($quiz->status === 'archived') bg-red-500 text-white
+                                                    @else bg-yellow-400 text-yellow-900
                                                     @endif">
                                                     {{ ucfirst($quiz->status) }}
                                                 </span>
