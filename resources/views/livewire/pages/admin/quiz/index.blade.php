@@ -27,6 +27,10 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="font-semibold text-xl">Quizzes</h2>
+                        <a href="{{ route('admin.quizzes.create') }}" wire:navigate
+                            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                            {{ __('Create Quiz') }}
+                        </a>
                     </div>
 
                     @if ($quizzes->isEmpty())
@@ -61,7 +65,7 @@ new #[Layout('layouts.app')] class extends Component
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $quiz->questions_count }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $quiz->created_at->format('Y-m-d') }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
+                                                <a href="{{ route('admin.quizzes.edit', $quiz) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Edit</a>
                                             </td>
                                         </tr>
                                     @endforeach

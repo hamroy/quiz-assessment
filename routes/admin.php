@@ -9,4 +9,10 @@ Route::prefix('admin')
     ->group(function () {
         Volt::route('quizzes', 'pages.admin.quiz.index')
             ->name('quizzes.index');
+
+        Volt::route('quizzes/create', 'pages.admin.quiz.create')
+            ->name('quizzes.create');
+
+        Volt::route('quizzes/{quiz}/edit', 'pages.admin.quiz.edit')
+            ->name('quizzes.edit');
     });

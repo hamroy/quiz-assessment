@@ -18,6 +18,14 @@ final class QuizRepository implements QuizRepositoryInterface
         return Quiz::query()->where('slug', $slug)->firstOrFail();
     }
 
+    public function existsBySlug(string $slug, ?int $exceptId = null): bool
+    {
+        return Quiz::query()
+            ->where('slug', $slug)
+            ->when($exceptId, fn ($query) => $query->where('id', '!=', $exceptId))
+            ->exists();
+    }
+
     public function create(array $data): Quiz
     {
         return Quiz::query()->create($data);
