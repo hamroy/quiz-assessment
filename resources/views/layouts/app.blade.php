@@ -32,5 +32,8 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <x-confirmation-modal />
+    </body>
     </body>
 </html>

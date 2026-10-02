@@ -20,9 +20,7 @@ class QuizDeleteTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.index')
-            ->call('confirmDelete', $quiz->id)
-            ->call('delete')
-            ->assertSet('deletingId', null);
+            ->call('delete', $quiz->id);
 
         $this->assertDatabaseMissing('quizzes', ['id' => $quiz->id]);
     }
@@ -40,22 +38,8 @@ class QuizDeleteTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.index')
-            ->call('confirmDelete', $quiz->id)
-            ->call('delete')
+            ->call('delete', $quiz->id)
             ->assertSet('deleteError', 'Quiz with attempts cannot be deleted.');
-
-        $this->assertDatabaseHas('quizzes', ['id' => $quiz->id]);
-    }
-
-    public function test_delete_requires_confirmation(): void
-    {
-        $user = User::factory()->create();
-        $quiz = Quiz::factory()->create();
-
-        Livewire::actingAs($user)
-            ->test('pages.admin.quiz.index')
-            ->call('delete')
-            ->assertSet('deletingId', null);
 
         $this->assertDatabaseHas('quizzes', ['id' => $quiz->id]);
     }
