@@ -63,11 +63,11 @@ RUN docker-php-ext-install \
 
 RUN apk del .build-deps
 
-# Composer dependencies
-COPY --from=vendor /app/vendor ./vendor
-
 # Application source
 COPY . .
+
+# Production Composer dependencies override any local vendor directory.
+COPY --from=vendor /app/vendor ./vendor
 
 # Vite assets
 COPY --from=frontend /app/public/build ./public/build
@@ -83,6 +83,9 @@ RUN mkdir -p \
 RUN chown -R www-data:www-data \
     storage \
     bootstrap/cache
+
+RUN rm -f bootstrap/cache/*.php \
+    && php artisan package:discover --ansi
 
 EXPOSE 8080
 
