@@ -24,4 +24,6 @@ interface QuizRepositoryInterface
     public function hasQuestions(Quiz $quiz): bool;
 
     public function list(array $with = [], array $withCount = []): LengthAwarePaginator;
+
+    public function listPublished(array $with = [], array $withCount = []): LengthAwarePaginator;
 }

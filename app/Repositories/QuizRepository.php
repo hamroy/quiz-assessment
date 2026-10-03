@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\QuizStatus;
 use App\Models\Quiz;
 use App\Repositories\Contracts\QuizRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -58,6 +59,16 @@ final class QuizRepository implements QuizRepositoryInterface
         return Quiz::query()
             ->with($with)
             ->when($withCount, fn ($query) => $query->withCount($withCount))
+            ->latest()
+            ->paginate(12);
+    }
+
+    public function listPublished(array $with = [], array $withCount = []): LengthAwarePaginator
+    {
+        return Quiz::query()
+            ->with($with)
+            ->when($withCount, fn ($query) => $query->withCount($withCount))
+            ->where('status', QuizStatus::Published->value)
             ->latest()
             ->paginate(12);
     }

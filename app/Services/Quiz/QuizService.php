@@ -73,6 +73,11 @@ final class QuizService
         return $this->repository->list([], ['questions']);
     }
 
+    public function listPublished(): LengthAwarePaginator
+    {
+        return $this->repository->listPublished([], ['questions']);
+    }
+
     public function findById(int $id): Quiz
     {
         return $this->repository->findById($id);
