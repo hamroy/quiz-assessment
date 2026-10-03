@@ -5,12 +5,19 @@ namespace Tests\Feature\Public;
 use App\Enums\QuestionType;
 use App\Models\Quiz;
 use Livewire\Livewire;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class QuizAttemptTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_start_creates_in_progress_attempt_and_redirects(): void
     {
@@ -23,7 +30,7 @@ class QuizAttemptTest extends TestCase
         $this->assertDatabaseHas('quiz_attempts', [
             'quiz_id' => $quiz->id,
             'status' => 'in_progress',
-            'user_id' => null,
+            'user_id' => auth()->id(),
         ]);
     }
 

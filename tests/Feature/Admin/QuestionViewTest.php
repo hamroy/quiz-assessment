@@ -27,7 +27,7 @@ class QuestionViewTest extends TestCase
         $question->answerOptions()->create(['option_text' => 'Correct one', 'is_correct' => true, 'order' => 1]);
         $question->answerOptions()->create(['option_text' => 'Wrong one', 'is_correct' => false, 'order' => 2]);
 
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.questions.view', ['quiz' => $question->quiz_id, 'question' => $question->id]))
             ->assertOk()
             ->assertSee('View Question')
@@ -40,7 +40,7 @@ class QuestionViewTest extends TestCase
     {
         $question = $this->createQuestion();
 
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.questions.view', ['quiz' => $question->quiz_id, 'question' => $question->id]))
             ->assertOk()
             ->assertSee('No answer options yet.');

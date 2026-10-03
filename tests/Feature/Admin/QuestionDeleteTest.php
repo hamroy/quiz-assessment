@@ -16,7 +16,7 @@ class QuestionDeleteTest extends TestCase
 
     public function test_admin_can_delete_question(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $question = $this->createQuestion();
 
         Livewire::actingAs($user)
@@ -28,7 +28,7 @@ class QuestionDeleteTest extends TestCase
 
     public function test_delete_does_not_affect_other_questions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         $q1 = $quiz->questions()->create([

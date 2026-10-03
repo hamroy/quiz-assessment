@@ -6,12 +6,19 @@ use App\Enums\QuestionType;
 use App\Models\Quiz;
 use App\Services\Assessment\EvaluationService;
 use App\Services\Assessment\QuizAttemptService;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class QuizEvaluationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_evaluation_counts_answers_and_returns_question_details(): void
     {

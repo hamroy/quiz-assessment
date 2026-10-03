@@ -24,7 +24,7 @@ class QuestionCreateTest extends TestCase
 
     public function test_admin_can_view_create_question_form(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['title' => 'Sample Quiz']);
 
         $this->actingAs($user)
@@ -60,7 +60,7 @@ class QuestionCreateTest extends TestCase
 
     public function test_admin_can_create_a_question(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         Livewire::actingAs($user)
@@ -83,7 +83,7 @@ class QuestionCreateTest extends TestCase
 
     public function test_question_is_required(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         Livewire::actingAs($user)
@@ -98,7 +98,7 @@ class QuestionCreateTest extends TestCase
 
     public function test_points_must_be_at_least_1(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         Livewire::actingAs($user)
@@ -113,7 +113,7 @@ class QuestionCreateTest extends TestCase
 
     public function test_type_must_be_valid_enum(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         Livewire::actingAs($user)

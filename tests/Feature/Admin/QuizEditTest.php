@@ -28,7 +28,7 @@ class QuizEditTest extends TestCase
             'status' => 'draft',
         ]);
 
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get("/admin/quizzes/{$quiz->id}/edit")
             ->assertStatus(200)
             ->assertSee('Edit Quiz')
@@ -38,7 +38,7 @@ class QuizEditTest extends TestCase
 
     public function test_admin_can_update_quiz(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create([
             'title' => 'Old Title',
             'slug' => 'old-title',
@@ -64,7 +64,7 @@ class QuizEditTest extends TestCase
 
     public function test_updating_title_to_duplicate_is_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $quiz = Quiz::factory()->create(['title' => 'Alpha', 'slug' => 'alpha']);
         Quiz::factory()->create(['title' => 'Beta', 'slug' => 'beta']);
@@ -83,7 +83,7 @@ class QuizEditTest extends TestCase
 
     public function test_editing_without_changing_title_keeps_slug(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['title' => 'Stable', 'slug' => 'stable']);
 
         Livewire::actingAs($user)
@@ -103,7 +103,7 @@ class QuizEditTest extends TestCase
     {
         $quiz = Quiz::factory()->create();
 
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
             ->set('form.title', '')
             ->call('save')

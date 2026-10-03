@@ -22,7 +22,7 @@ class QuestionListTest extends TestCase
 
     public function test_admin_can_view_questions_for_a_quiz(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['title' => 'Sample Quiz']);
         $question = $quiz->questions()->create([
             'question' => 'What is the answer?',
@@ -49,7 +49,7 @@ class QuestionListTest extends TestCase
 
     public function test_question_list_is_scoped_to_the_selected_quiz(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
         $otherQuiz = Quiz::factory()->create();
         $quiz->questions()->create([
@@ -74,7 +74,7 @@ class QuestionListTest extends TestCase
 
     public function test_question_list_does_not_trigger_n_plus_one_queries(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
         $questions = $quiz->questions()->createMany(collect(range(1, 3))->map(fn ($number) => [
             'question' => 'Question '.$number,
@@ -107,7 +107,7 @@ class QuestionListTest extends TestCase
 
     public function test_question_list_shows_empty_state(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create();
 
         $this->actingAs($user)

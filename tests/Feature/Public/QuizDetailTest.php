@@ -3,12 +3,19 @@
 namespace Tests\Feature\Public;
 
 use App\Models\Quiz;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class QuizDetailTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_published_quiz_detail_is_viewable_by_slug(): void
     {

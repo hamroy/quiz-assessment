@@ -8,12 +8,19 @@ use App\Models\QuizAttempt;
 use App\Services\Assessment\QuizAttemptService;
 use App\Services\Assessment\ScoringService;
 use Livewire\Livewire;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class QuizSubmitTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_score_is_percentage_of_obtained_points(): void
     {

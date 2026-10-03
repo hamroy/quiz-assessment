@@ -14,7 +14,7 @@ class QuizPublishTest extends TestCase
 
     public function test_admin_can_publish_quiz_with_questions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['status' => 'draft', 'published_at' => null]);
         $quiz->questions()->create([
             'question' => 'Question 1',
@@ -36,7 +36,7 @@ class QuizPublishTest extends TestCase
 
     public function test_publish_is_blocked_when_quiz_has_no_questions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['status' => 'draft', 'published_at' => null]);
 
         Livewire::actingAs($user)
@@ -53,7 +53,7 @@ class QuizPublishTest extends TestCase
 
     public function test_admin_can_archive_published_quiz_and_retain_published_at(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $publishedAt = now()->subDay();
         $quiz = Quiz::factory()->create([
             'status' => 'published',
@@ -73,7 +73,7 @@ class QuizPublishTest extends TestCase
 
     public function test_admin_can_republish_archived_quiz(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['status' => 'archived']);
         $quiz->questions()->create([
             'question' => 'Question 1',

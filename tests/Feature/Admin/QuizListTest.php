@@ -19,7 +19,7 @@ class QuizListTest extends TestCase
 
     public function test_authenticated_user_can_view_quiz_list(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $quiz = Quiz::factory()->create([
             'title' => 'Sample Quiz',
@@ -48,7 +48,7 @@ class QuizListTest extends TestCase
 
     public function test_question_count_does_not_trigger_n_plus_one(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         Quiz::factory()->count(3)->create();
 
@@ -68,7 +68,7 @@ class QuizListTest extends TestCase
 
     public function test_quiz_list_is_paginated_and_shows_empty_state(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $response = $this->actingAs($user)->get('/admin/quizzes');
 

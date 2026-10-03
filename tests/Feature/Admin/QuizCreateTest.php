@@ -20,7 +20,7 @@ class QuizCreateTest extends TestCase
 
     public function test_admin_can_view_create_form(): void
     {
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get('/admin/quizzes/create')
             ->assertStatus(200)
             ->assertSee('Create Quiz');
@@ -28,7 +28,7 @@ class QuizCreateTest extends TestCase
 
     public function test_admin_can_create_quiz(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.create')
@@ -47,7 +47,7 @@ class QuizCreateTest extends TestCase
 
     public function test_title_is_required(): void
     {
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.quiz.create')
             ->set('form.title', '')
             ->call('save')
@@ -56,7 +56,7 @@ class QuizCreateTest extends TestCase
 
     public function test_status_must_be_valid(): void
     {
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.quiz.create')
             ->set('form.title', 'Valid Title')
             ->set('form.status', 'invalid')
@@ -66,7 +66,7 @@ class QuizCreateTest extends TestCase
 
     public function test_duplicate_title_is_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         Quiz::factory()->create(['title' => 'Same Title', 'slug' => 'same-title']);
 

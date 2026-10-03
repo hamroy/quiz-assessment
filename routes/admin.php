@@ -33,4 +33,13 @@ Route::prefix('admin')
 
         Volt::route('quizzes/{quiz}/questions/{question}/view', 'pages.admin.question.view')
             ->name('questions.view');
+
+        Volt::route('users', 'pages.admin.user.index')
+            ->name('users.index');
+
+        Volt::route('users/create', 'pages.admin.user.create')
+            ->name('users.create');
+
+        Volt::route('users/{user}/edit', 'pages.admin.user.edit')
+            ->name('users.edit');
     });

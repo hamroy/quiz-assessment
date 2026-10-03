@@ -15,7 +15,7 @@ class QuizDeleteTest extends TestCase
 
     public function test_admin_can_delete_quiz_without_attempts(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['title' => 'To Delete']);
 
         Livewire::actingAs($user)
@@ -27,7 +27,7 @@ class QuizDeleteTest extends TestCase
 
     public function test_delete_is_blocked_when_quiz_has_attempts(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $quiz = Quiz::factory()->create(['title' => 'Protected Quiz']);
 
         QuizAttempt::create([

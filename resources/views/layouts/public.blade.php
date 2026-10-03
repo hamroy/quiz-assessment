@@ -17,9 +17,19 @@
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 @auth
-                    <a href="{{ route('dashboard') }}" wire:navigate class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                        {{ __('Dashboard') }}
-                    </a>
+                    <div class="flex items-center gap-3">
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('dashboard') }}" wire:navigate class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                {{ __('Dashboard') }}
+                            </a>
+                        @endif
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                {{ __('Log Out') }}
+                            </button>
+                        </form>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" wire:navigate class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                         {{ __('Log in') }}
@@ -27,11 +37,7 @@
                 @endauth
             </nav>
         </header>
-
-        <main class="flex-1">
-            {{ $slot }}
-        </main>
-
+        <main class="flex-1">{{ $slot }}</main>
         <footer class="border-t border-gray-200 bg-white">
             <div class="mx-auto max-w-7xl px-4 py-6 text-sm text-gray-500 sm:px-6 lg:px-8">
                 &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}

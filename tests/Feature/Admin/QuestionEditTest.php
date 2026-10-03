@@ -30,7 +30,7 @@ class QuestionEditTest extends TestCase
             'order' => 2,
         ]);
 
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.questions.edit', ['quiz' => $question->quiz, 'question' => $question]))
             ->assertOk()
             ->assertSee('Edit Question');
@@ -38,7 +38,7 @@ class QuestionEditTest extends TestCase
 
     public function test_admin_can_update_question(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $question = $this->createQuestion();
 
         Livewire::actingAs($user)
@@ -62,7 +62,7 @@ class QuestionEditTest extends TestCase
     {
         $question = $this->createQuestion();
 
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
             ->set('form.question', '')
             ->call('save')
@@ -73,7 +73,7 @@ class QuestionEditTest extends TestCase
     {
         $question = $this->createQuestion();
 
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
             ->set('form.question', 'Test')
             ->set('form.points', 0)
@@ -85,7 +85,7 @@ class QuestionEditTest extends TestCase
     {
         $question = $this->createQuestion();
 
-        Livewire::actingAs(User::factory()->create())
+        Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
             ->set('form.question', 'Test')
             ->set('form.type', 'invalid')

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/public.php';
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'admin'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')

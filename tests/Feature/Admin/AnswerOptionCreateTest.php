@@ -26,7 +26,7 @@ class AnswerOptionCreateTest extends TestCase
     {
         $question = $this->createQuestion();
 
-        $this->actingAs(User::factory()->create())
+        $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.answer-options.create', ['quiz' => $question->quiz_id, 'question' => $question->id]))
             ->assertOk()
             ->assertSee('Add Answer Option')
@@ -37,7 +37,7 @@ class AnswerOptionCreateTest extends TestCase
 
     public function test_admin_can_create_answer_option(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $question = $this->createQuestion();
 
         Livewire::actingAs($user)
@@ -58,7 +58,7 @@ class AnswerOptionCreateTest extends TestCase
 
     public function test_option_text_is_required(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $question = $this->createQuestion();
 
         Livewire::actingAs($user)
@@ -83,7 +83,7 @@ class AnswerOptionCreateTest extends TestCase
 
     public function test_is_correct_defaults_to_false(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $question = $this->createQuestion();
 
         Livewire::actingAs($user)

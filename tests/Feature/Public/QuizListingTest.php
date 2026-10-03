@@ -3,6 +3,7 @@
 namespace Tests\Feature\Public;
 
 use App\Models\Quiz;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -10,6 +11,12 @@ use Tests\TestCase;
 class QuizListingTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_only_published_quizzes_are_listed(): void
     {
