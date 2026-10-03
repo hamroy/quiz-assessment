@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AssessmentResultExportController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -42,4 +43,10 @@ Route::prefix('admin')
 
         Volt::route('users/{user}/edit', 'pages.admin.user.edit')
             ->name('users.edit');
+
+        Route::get('results/export', AssessmentResultExportController::class)
+            ->name('results.export');
+
+        Volt::route('results', 'pages.admin.result.index')
+            ->name('results.index');
     });

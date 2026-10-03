@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\QuizType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,12 @@ class Quiz extends Model
         return [
             'published_at' => 'datetime',
         ];
+    }
+
+    public function getTypeLabelAttribute(): string
+    {
+        return QuizType::tryFrom((string) $this->type)?->label()
+            ?? ucfirst(str_replace('_', ' ', (string) $this->type));
     }
 
     public function questions(): HasMany
