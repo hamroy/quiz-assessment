@@ -1,28 +1,18 @@
 <?php
 
 use App\Enums\QuizStatus;
+use App\Livewire\Forms\QuizForm;
 use App\Services\Quiz\QuizService;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.app')] class extends Component
 {
-    public string $title = '';
-
-    public string $description = '';
-
-    public string $status = 'draft';
+    public QuizForm $form;
 
     public function save(QuizService $service): void
     {
-        $validated = $this->validate([
-            'title' => ['required', 'string', 'max:255', 'unique:quizzes,title'],
-            'description' => ['nullable', 'string'],
-            'status' => ['required', Rule::enum(QuizStatus::class)],
-        ]);
-
-        $service->create($validated);
+        $service->create($this->form->validate());
 
         $this->redirectRoute('admin.quizzes.index', navigate: true);
     }
@@ -39,28 +29,28 @@ new #[Layout('layouts.app')] class extends Component
                         <!-- Title -->
                         <div>
                             <x-input-label for="title" :value="__('Title')" />
-                            <x-text-input wire:model="title" id="title" class="block mt-1 w-full" type="text" name="title" required autofocus />
-                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                            <x-text-input wire:model="form.title" id="title" class="block mt-1 w-full" type="text" name="title" required autofocus />
+                            <x-input-error :messages="$errors->get('form.title')" class="mt-2" />
                         </div>
 
                         <!-- Description -->
                         <div class="mt-4">
                             <x-input-label for="description" :value="__('Description')" />
-                            <textarea wire:model="description" id="description" name="description" rows="4"
+                            <textarea wire:model="form.description" id="description" name="description" rows="4"
                                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"></textarea>
-                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('form.description')" class="mt-2" />
                         </div>
 
                         <!-- Status -->
                         <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
-                            <select wire:model="status" id="status" name="status"
+                            <select wire:model="form.status" id="status" name="status"
                                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                 @foreach (QuizStatus::cases() as $case)
                                     <option value="{{ $case->value }}">{{ ucfirst($case->value) }}</option>
                                 @endforeach
                             </select>
-                            <x-input-error :messages="$errors->get('status')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('form.status')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-6">

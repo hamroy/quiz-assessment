@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin;
 
 use App\Enums\QuestionType;
-use App\Models\AnswerOption;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
@@ -43,9 +42,9 @@ class AnswerOptionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.answer-option.create', ['quiz' => $question->quiz_id, 'question' => $question->id])
-            ->set('option_text', 'Option A')
-            ->set('is_correct', true)
-            ->set('order', 1)
+            ->set('form.option_text', 'Option A')
+            ->set('form.is_correct', true)
+            ->set('form.order', 1)
             ->call('save')
             ->assertRedirect(route('admin.questions.edit', ['quiz' => $question->quiz_id, 'question' => $question->id]));
 
@@ -64,11 +63,11 @@ class AnswerOptionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.answer-option.create', ['quiz' => $question->quiz_id, 'question' => $question->id])
-            ->set('option_text', '')
-            ->set('is_correct', false)
-            ->set('order', 1)
+            ->set('form.option_text', '')
+            ->set('form.is_correct', false)
+            ->set('form.order', 1)
             ->call('save')
-            ->assertHasErrors(['option_text' => 'required']);
+            ->assertHasErrors(['form.option_text' => 'required']);
     }
 
     public function test_order_is_prefilled_with_next_position(): void
@@ -89,8 +88,8 @@ class AnswerOptionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.answer-option.create', ['quiz' => $question->quiz_id, 'question' => $question->id])
-            ->set('option_text', 'Wrong option')
-            ->set('order', 1)
+            ->set('form.option_text', 'Wrong option')
+            ->set('form.order', 1)
             ->call('save');
 
         $this->assertDatabaseHas('answer_options', [

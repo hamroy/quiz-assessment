@@ -65,10 +65,10 @@ class QuestionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.question.create', ['quiz' => $quiz])
-            ->set('question', 'What is the capital of France?')
-            ->set('type', QuestionType::SingleChoice->value)
-            ->set('points', 2)
-            ->set('order', 1)
+            ->set('form.question', 'What is the capital of France?')
+            ->set('form.type', QuestionType::SingleChoice->value)
+            ->set('form.points', 2)
+            ->set('form.order', 1)
             ->call('save')
             ->assertRedirect(route('admin.questions.index', ['quiz' => $quiz->id]));
 
@@ -88,12 +88,12 @@ class QuestionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.question.create', ['quiz' => $quiz])
-            ->set('question', '')
-            ->set('type', QuestionType::SingleChoice->value)
-            ->set('points', 1)
-            ->set('order', 1)
+            ->set('form.question', '')
+            ->set('form.type', QuestionType::SingleChoice->value)
+            ->set('form.points', 1)
+            ->set('form.order', 1)
             ->call('save')
-            ->assertHasErrors(['question' => 'required']);
+            ->assertHasErrors(['form.question' => 'required']);
     }
 
     public function test_points_must_be_at_least_1(): void
@@ -103,12 +103,12 @@ class QuestionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.question.create', ['quiz' => $quiz])
-            ->set('question', 'Test question')
-            ->set('type', QuestionType::SingleChoice->value)
-            ->set('points', 0)
-            ->set('order', 1)
+            ->set('form.question', 'Test question')
+            ->set('form.type', QuestionType::SingleChoice->value)
+            ->set('form.points', 0)
+            ->set('form.order', 1)
             ->call('save')
-            ->assertHasErrors(['points' => 'min']);
+            ->assertHasErrors(['form.points' => 'min']);
     }
 
     public function test_type_must_be_valid_enum(): void
@@ -118,11 +118,11 @@ class QuestionCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.question.create', ['quiz' => $quiz])
-            ->set('question', 'Test question')
-            ->set('type', 'invalid_type')
-            ->set('points', 1)
-            ->set('order', 1)
+            ->set('form.question', 'Test question')
+            ->set('form.type', 'invalid_type')
+            ->set('form.points', 1)
+            ->set('form.order', 1)
             ->call('save')
-            ->assertHasErrors(['type']);
+            ->assertHasErrors(['form.type']);
     }
 }

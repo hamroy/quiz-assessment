@@ -43,10 +43,10 @@ class QuestionEditTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
-            ->set('question', 'Updated question?')
-            ->set('type', QuestionType::SingleChoice->value)
-            ->set('points', 5)
-            ->set('order', 1)
+            ->set('form.question', 'Updated question?')
+            ->set('form.type', QuestionType::SingleChoice->value)
+            ->set('form.points', 5)
+            ->set('form.order', 1)
             ->call('save')
             ->assertRedirect(route('admin.questions.index', ['quiz' => $question->quiz->id]));
 
@@ -64,9 +64,9 @@ class QuestionEditTest extends TestCase
 
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
-            ->set('question', '')
+            ->set('form.question', '')
             ->call('save')
-            ->assertHasErrors(['question' => 'required']);
+            ->assertHasErrors(['form.question' => 'required']);
     }
 
     public function test_points_must_be_at_least_1(): void
@@ -75,10 +75,10 @@ class QuestionEditTest extends TestCase
 
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
-            ->set('question', 'Test')
-            ->set('points', 0)
+            ->set('form.question', 'Test')
+            ->set('form.points', 0)
             ->call('save')
-            ->assertHasErrors(['points' => 'min']);
+            ->assertHasErrors(['form.points' => 'min']);
     }
 
     public function test_type_must_be_valid_enum(): void
@@ -87,10 +87,10 @@ class QuestionEditTest extends TestCase
 
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.question.edit', ['quiz' => $question->quiz->id, 'question' => $question->id])
-            ->set('question', 'Test')
-            ->set('type', 'invalid')
+            ->set('form.question', 'Test')
+            ->set('form.type', 'invalid')
             ->call('save')
-            ->assertHasErrors(['type']);
+            ->assertHasErrors(['form.type']);
     }
 
     private function createQuestion(array $overrides = []): Question

@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\QuestionType;
+use App\Livewire\Forms\QuestionForm;
 use App\Services\AnswerOption\AnswerOptionService;
 use App\Services\Question\QuestionService;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -13,10 +13,7 @@ new #[Layout('layouts.app')] class extends Component
 
     public int $questionId;
 
-    public string $question = '';
-    public string $type = '';
-    public int $points = 1;
-    public int $order = 1;
+    public QuestionForm $form;
 
     public function mount(int $quiz, int $question): void
     {
@@ -24,10 +21,10 @@ new #[Layout('layouts.app')] class extends Component
 
         $this->quizId = $quiz;
         $this->questionId = $questionModel->id;
-        $this->question = $questionModel->question;
-        $this->type = $questionModel->type;
-        $this->points = $questionModel->points;
-        $this->order = $questionModel->order;
+        $this->form->question = $questionModel->question;
+        $this->form->type = $questionModel->type;
+        $this->form->points = $questionModel->points;
+        $this->form->order = $questionModel->order;
     }
 
     public function with(): array
@@ -41,14 +38,7 @@ new #[Layout('layouts.app')] class extends Component
 
     public function save(QuestionService $service): void
     {
-        $validated = $this->validate([
-            'question' => ['required', 'string'],
-            'type' => ['required', Rule::enum(QuestionType::class)],
-            'points' => ['required', 'integer', 'min:1'],
-            'order' => ['required', 'integer', 'min:1'],
-        ]);
-
-        $service->update($service->findById($this->questionId), $validated);
+        $service->update($service->findById($this->questionId), $this->form->validate());
 
         $this->redirectRoute('admin.questions.index', ['quiz' => $this->quizId], navigate: true);
     }
@@ -87,22 +77,22 @@ new #[Layout('layouts.app')] class extends Component
                     <form wire:submit="save" class="space-y-6">
                         <div>
                             <label for="question" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Question</label>
-                            <textarea id="question" wire:model="question" rows="4"
+                            <textarea id="question" wire:model="form.question" rows="4"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                            @error('question')
+                            @error('form.question')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
                             <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
-                            <select id="type" wire:model="type"
+                            <select id="type" wire:model="form.type"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 @foreach (QuestionType::cases() as $t)
                                     <option value="{{ $t->value }}">{{ ucfirst(str_replace('_', ' ', $t->value)) }}</option>
                                 @endforeach
                             </select>
-                            @error('type')
+                            @error('form.type')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -110,18 +100,18 @@ new #[Layout('layouts.app')] class extends Component
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="points" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Points</label>
-                                <input id="points" type="number" wire:model="points" min="1"
+                                <input id="points" type="number" wire:model="form.points" min="1"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                @error('points')
+                                @error('form.points')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div>
                                 <label for="order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Order</label>
-                                <input id="order" type="number" wire:model="order" min="1"
+                                <input id="order" type="number" wire:model="form.order" min="1"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                @error('order')
+                                @error('form.order')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

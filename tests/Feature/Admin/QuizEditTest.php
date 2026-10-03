@@ -47,9 +47,9 @@ class QuizEditTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
-            ->set('title', 'New Title')
-            ->set('description', 'New description')
-            ->set('status', 'published')
+            ->set('form.title', 'New Title')
+            ->set('form.description', 'New description')
+            ->set('form.status', 'published')
             ->call('save')
             ->assertRedirect(route('admin.quizzes.index'));
 
@@ -71,9 +71,9 @@ class QuizEditTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
-            ->set('title', 'Beta')
+            ->set('form.title', 'Beta')
             ->call('save')
-            ->assertHasErrors(['title' => 'unique']);
+            ->assertHasErrors(['form.title' => 'unique']);
 
         $this->assertDatabaseHas('quizzes', [
             'id' => $quiz->id,
@@ -88,8 +88,8 @@ class QuizEditTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
-            ->set('title', 'Stable')
-            ->set('status', 'archived')
+            ->set('form.title', 'Stable')
+            ->set('form.status', 'archived')
             ->call('save');
 
         $this->assertDatabaseHas('quizzes', [
@@ -105,8 +105,8 @@ class QuizEditTest extends TestCase
 
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
-            ->set('title', '')
+            ->set('form.title', '')
             ->call('save')
-            ->assertHasErrors(['title' => 'required']);
+            ->assertHasErrors(['form.title' => 'required']);
     }
 }

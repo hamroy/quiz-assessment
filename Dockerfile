@@ -56,7 +56,7 @@ RUN apk add --no-cache --virtual .build-deps \
     oniguruma-dev
 
 RUN docker-php-ext-install \
-    pdo_pgsql \
+    pdo_mysql \
     intl \
     mbstring \
     zip

@@ -32,9 +32,9 @@ class QuizCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.create')
-            ->set('title', 'My First Quiz')
-            ->set('description', 'A sample quiz')
-            ->set('status', 'draft')
+            ->set('form.title', 'My First Quiz')
+            ->set('form.description', 'A sample quiz')
+            ->set('form.status', 'draft')
             ->call('save')
             ->assertRedirect(route('admin.quizzes.index'));
 
@@ -49,19 +49,19 @@ class QuizCreateTest extends TestCase
     {
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.quiz.create')
-            ->set('title', '')
+            ->set('form.title', '')
             ->call('save')
-            ->assertHasErrors(['title' => 'required']);
+            ->assertHasErrors(['form.title' => 'required']);
     }
 
     public function test_status_must_be_valid(): void
     {
         Livewire::actingAs(User::factory()->create())
             ->test('pages.admin.quiz.create')
-            ->set('title', 'Valid Title')
-            ->set('status', 'invalid')
+            ->set('form.title', 'Valid Title')
+            ->set('form.status', 'invalid')
             ->call('save')
-            ->assertHasErrors(['status']);
+            ->assertHasErrors(['form.status']);
     }
 
     public function test_duplicate_title_is_rejected(): void
@@ -72,10 +72,10 @@ class QuizCreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.create')
-            ->set('title', 'Same Title')
-            ->set('status', 'draft')
+            ->set('form.title', 'Same Title')
+            ->set('form.status', 'draft')
             ->call('save')
-            ->assertHasErrors(['title' => 'unique']);
+            ->assertHasErrors(['form.title' => 'unique']);
 
         $this->assertSame(1, Quiz::query()->where('title', 'Same Title')->count());
     }
