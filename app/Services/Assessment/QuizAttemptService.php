@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Repositories\Contracts\QuizAnswerRepositoryInterface;
 use App\Repositories\Contracts\QuizAttemptRepositoryInterface;
 use App\Repositories\Contracts\QuizRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 final class QuizAttemptService
 {
@@ -20,6 +21,7 @@ final class QuizAttemptService
         private readonly QuizAttemptRepositoryInterface $attempts,
         private readonly QuizAnswerRepositoryInterface $answers,
         private readonly QuizRepositoryInterface $quizzes,
+        private readonly ScoringService $scoring,
     ) {
     }
 
@@ -44,6 +46,23 @@ final class QuizAttemptService
     public function findById(int $id): QuizAttempt
     {
         return $this->attempts->findById($id);
+    }
+
+    public function submit(QuizAttempt $attempt): QuizAttempt
+    {
+        if ($attempt->status !== QuizAttemptStatus::InProgress->value) {
+            throw new \DomainException('Attempt is already submitted.');
+        }
+
+        return DB::transaction(function () use ($attempt) {
+            $score = $this->scoring->score($attempt);
+
+            return $this->attempts->update($attempt, [
+                'status' => QuizAttemptStatus::Submitted->value,
+                'submitted_at' => now(),
+                'score' => $score,
+            ]);
+        });
     }
 
     public function answer(QuizAttempt $attempt, Question $question, AnswerOption $option): QuizAnswer

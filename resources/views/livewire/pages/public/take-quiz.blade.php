@@ -69,6 +69,13 @@ new #[Layout('layouts.public')] class extends Component
         }
     }
 
+    public function submit(QuizAttemptService $service): void
+    {
+        $service->submit($this->attempt());
+
+        $this->redirectRoute('quizzes.result', ['slug' => $this->attempt()->quiz->slug, 'attempt' => $this->attemptId], navigate: true);
+    }
+
     public function with(): array
     {
         return [
@@ -120,8 +127,8 @@ new #[Layout('layouts.public')] class extends Component
                     {{ __('Next') }}
                 </button>
             @else
-                <button type="button" disabled
-                    class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-semibold text-white opacity-50">
+                <button type="button" wire:click="submit" wire:confirm="{{ __('Submit your assessment?') }}"
+                    class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700">
                     {{ __('Submit') }}
                 </button>
             @endif

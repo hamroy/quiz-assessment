@@ -16,4 +16,11 @@ final class QuizAttemptRepository implements QuizAttemptRepositoryInterface
     {
         return QuizAttempt::query()->findOrFail($id);
     }
+
+    public function update(QuizAttempt $attempt, array $data): QuizAttempt
+    {
+        $attempt->update($data);
+
+        return $attempt->refresh();
+    }
 }

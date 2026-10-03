@@ -9,4 +9,6 @@ interface QuizAttemptRepositoryInterface
     public function create(array $data): QuizAttempt;
 
     public function findById(int $id): QuizAttempt;
+
+    public function update(QuizAttempt $attempt, array $data): QuizAttempt;
 }

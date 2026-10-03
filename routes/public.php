@@ -10,3 +10,6 @@ Volt::route('quizzes/{slug}', 'pages.public.quiz-detail')
 
 Volt::route('quizzes/{slug}/attempts/{attempt}', 'pages.public.take-quiz')
     ->name('quizzes.take');
+
+Volt::route('quizzes/{slug}/attempts/{attempt}/result', 'pages.public.result')
+    ->name('quizzes.result');
