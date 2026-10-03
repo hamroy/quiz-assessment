@@ -97,7 +97,10 @@ new #[Layout('layouts.public')] class extends Component
                 @endforeach
             </section>
 
-            <div class="mt-8 border-t border-gray-100 pt-6 text-center">
+            <div class="mt-8 flex flex-col gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:justify-center">
+                <a href="{{ route('quizzes.result.pdf', ['slug' => $attempt->quiz->slug, 'attempt' => $attempt->id]) }}" class="btn-secondary sm:px-8 sm:py-3">
+                    {{ __('Download PDF') }}
+                </a>
                 <a href="{{ route('home') }}" wire:navigate class="btn-primary sm:px-8 sm:py-3">
                     {{ __('Back to Assessments') }}
                 </a>

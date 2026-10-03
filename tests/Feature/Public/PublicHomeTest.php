@@ -10,9 +10,9 @@ class PublicHomeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_is_redirected_to_login(): void
+    public function test_guest_can_view_public_home(): void
     {
-        $this->get(route('home'))->assertRedirect(route('login'));
+        $this->get(route('home'))->assertOk();
     }
 
     public function test_authenticated_user_can_view_public_home_without_admin_navigation(): void

@@ -17,6 +17,12 @@ new #[Layout('layouts.public')] class extends Component
 
     public function start(QuizAttemptService $service): void
     {
+        if (! auth()->check()) {
+            $this->redirectRoute('login', navigate: true);
+
+            return;
+        }
+
         $attempt = $service->start($this->quiz, auth()->user());
 
         $this->redirectRoute('quizzes.take', ['slug' => $this->quiz->slug, 'attempt' => $attempt->id], navigate: true);

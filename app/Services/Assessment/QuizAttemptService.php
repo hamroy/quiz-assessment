@@ -48,6 +48,11 @@ final class QuizAttemptService
         return $this->attempts->findById($id);
     }
 
+    public function listSubmittedForUser(int $userId): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->attempts->listSubmittedForUser($userId);
+    }
+
     public function submit(QuizAttempt $attempt): QuizAttempt
     {
         if ($attempt->status !== QuizAttemptStatus::InProgress->value) {

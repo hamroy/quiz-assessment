@@ -31,9 +31,9 @@
                 {{-- Desktop nav --}}
                 <div class="hidden items-center gap-3 sm:flex">
                     @auth
-                        @if (auth()->user()->isAdmin())
-                            <a href="{{ route('dashboard') }}" wire:navigate class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                {{ __('Dashboard') }}
+                        @if (! auth()->user()->isAdmin())
+                            <a href="{{ route('results.index') }}" wire:navigate class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                {{ __('My Results') }}
                             </a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
@@ -54,9 +54,9 @@
             <div class="sm:hidden" x-show="open" x-cloak x-transition>
                 <div class="space-y-1 border-t border-gray-100 bg-white px-4 pb-3 pt-2">
                     @auth
-                        @if (auth()->user()->isAdmin())
-                            <a href="{{ route('dashboard') }}" wire:navigate class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                {{ __('Dashboard') }}
+                        @if (! auth()->user()->isAdmin())
+                            <a href="{{ route('results.index') }}" wire:navigate class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                {{ __('My Results') }}
                             </a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
