@@ -1,36 +1,49 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: quiz_mysql
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quiz-assessment-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_KEY: "${APP_KEY}"
+
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: quiz_assessment
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: quiz-assessment-postgres
     restart: unless-stopped
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: quiz_assessment
+      POSTGRES_DB: quiz_assessment
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U postgres -d quiz_assessment"
+        ]
+      interval: 5s
       timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: quiz_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      retries: 10
 
 volumes:
-  mysql_data:
-  redis_data:
+  postgres_data:
