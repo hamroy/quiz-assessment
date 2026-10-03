@@ -30,7 +30,10 @@ RUN npm ci
 
 COPY resources ./resources
 COPY public ./public
+
 COPY vite.config.* ./
+COPY tailwind.config.* ./
+COPY postcss.config.* ./
 
 RUN npm run build
 
