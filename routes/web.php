@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+require __DIR__.'/public.php';
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
