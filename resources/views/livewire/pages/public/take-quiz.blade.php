@@ -98,7 +98,7 @@ new #[Layout('layouts.public')] class extends Component
             <div class="h-2 rounded-full bg-brand-600 transition-all" style="width: {{ ($current + 1) / $total * 100 }}%"></div>
         </div>
 
-        <div class="card mt-6 p-6 sm:p-8">
+        <div class="card mt-6 p-6 sm:p-8" wire:key="question-{{ $question->id }}">
             <h2 class="text-lg font-semibold text-gray-900">{{ $question->question }}</h2>
 
             <div class="mt-6 space-y-3">
@@ -122,11 +122,11 @@ new #[Layout('layouts.public')] class extends Component
             </button>
 
             @if ($current < $total - 1)
-                <button type="button" wire:click="next" class="btn-primary">
+                <button type="button" wire:key="nav-next" wire:click="next" class="btn-primary">
                     {{ __('Next') }}
                 </button>
             @else
-                <button type="button" wire:click="submit" wire:confirm="{{ __('Submit your assessment?') }}" class="btn-primary">
+                <button type="button" wire:key="nav-submit" wire:click="submit" wire:confirm="{{ __('Submit your assessment?') }}" class="btn-primary">
                     {{ __('Submit') }}
                 </button>
             @endif
