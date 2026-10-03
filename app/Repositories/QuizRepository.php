@@ -19,6 +19,14 @@ final class QuizRepository implements QuizRepositoryInterface
         return Quiz::query()->where('slug', $slug)->firstOrFail();
     }
 
+    public function findPublishedBySlug(string $slug): Quiz
+    {
+        return Quiz::query()
+            ->where('slug', $slug)
+            ->where('status', QuizStatus::Published->value)
+            ->firstOrFail();
+    }
+
     public function existsBySlug(string $slug, ?int $exceptId = null): bool
     {
         return Quiz::query()

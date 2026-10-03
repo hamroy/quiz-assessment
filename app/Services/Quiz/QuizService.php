@@ -83,6 +83,11 @@ final class QuizService
         return $this->repository->findById($id);
     }
 
+    public function findPublishedBySlug(string $slug): Quiz
+    {
+        return $this->repository->findPublishedBySlug($slug);
+    }
+
     public function uniqueSlug(string $title, ?int $exceptId = null): string
     {
         $slug = Str::slug($title);

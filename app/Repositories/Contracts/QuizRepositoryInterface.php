@@ -11,6 +11,8 @@ interface QuizRepositoryInterface
 
     public function findBySlug(string $slug): Quiz;
 
+    public function findPublishedBySlug(string $slug): Quiz;
+
     public function existsBySlug(string $slug, ?int $exceptId = null): bool;
 
     public function create(array $data): Quiz;
