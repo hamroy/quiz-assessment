@@ -1,58 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Quiz & Assessment Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A monolithic web application for creating and taking quizzes. Administrators manage quizzes, questions, and answer options; users take published assessments and review their scored results.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Admin quiz management: create, edit, publish, archive, and delete quizzes.
+- Question and answer-option management.
+- Public listing and detail pages for published quizzes.
+- Authenticated quiz attempts, answer persistence, server-side evaluation, and result review.
+- Role-based access for administrators and quiz-taking users.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.3+
+- Laravel 13
+- Livewire 3 and Volt
+- Tailwind CSS and Vite
+- MySQL 8
+- Docker Compose (optional)
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3 or later with the extensions required by Laravel and the configured database driver.
+- Composer
+- Node.js 20+ and npm
+- MySQL 8 (or Docker Desktop / Docker Engine with Compose)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+1. Clone the repository and enter the project directory:
 
-## Agentic Development
+   ```bash
+   git clone https://github.com/hamroy/quiz-assessment.git
+   cd quiz-assessment
+   ```
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+2. Install PHP dependencies and create the local environment file:
+
+   ```bash
+   composer install
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+   On Windows Command Prompt, use `copy .env.example .env` instead of `cp`.
+
+3. Configure the database settings in `.env` (see [Environment](#environment)). Create the database if it does not already exist, then run migrations and seed the development accounts:
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+4. Install frontend dependencies and build assets:
+
+   ```bash
+   npm install
+   npm run build
+   ```
+
+5. Start the application:
+
+   ```bash
+   php artisan serve
+   ```
+
+   Visit [http://localhost:8000](http://localhost:8000). For hot-reloaded frontend assets during development, run `npm run dev` in a second terminal.
+
+For a fresh local setup, `composer run setup` automates dependency installation, environment/key setup, migrations, and frontend build. Review the script in `composer.json` before running it; configure `.env` and the database for your environment as needed.
+
+## Environment
+
+Copy `.env.example` to `.env` and set the values for your local environment. At minimum, configure:
+
+| Variable | Purpose | Example |
+| --- | --- | --- |
+| `APP_NAME` | Application display name | `Quiz Assessment` |
+| `APP_ENV` | Runtime environment | `local` |
+| `APP_KEY` | Application encryption key; generate with `php artisan key:generate` | Generated value |
+| `APP_URL` | Base URL used by the application | `http://localhost:8000` |
+| `DB_CONNECTION` | Laravel database driver | `mysql` |
+| `DB_HOST` | Database host | `127.0.0.1` locally, `mysql` in Compose |
+| `DB_PORT` | Database port | `3306` |
+| `DB_DATABASE` | Database name | `quiz_assessment` |
+| `DB_USERNAME` | Database user | `root` locally; see Compose configuration for container setup |
+| `DB_PASSWORD` | Database password | Set to match your database configuration |
+
+Do not commit `.env` or production secrets.
+
+## Database
+
+The application uses MySQL. Schema migrations are in `database/migrations/`; `php artisan migrate` creates the tables. Run `php artisan db:seed` (or `php artisan migrate --seed`) to create development accounts:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@example.com` | `password` |
+| User | `user@example.com` | `password` |
+
+These are development credentials only. Change or remove them before deploying the application.
+
+## Running the Application
+
+### Local development
+
+Start Laravel and Vite in separate terminals:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan serve
+npm run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Docker Compose
 
-## Contributing
+The Compose configuration starts the app and MySQL services. Generate an application key and save it as `APP_KEY` in `.env` before starting the stack:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan key:generate --show
+# Copy the displayed key into .env as APP_KEY=<generated-key>
+docker compose up -d --build
+```
 
-## Code of Conduct
+The app is exposed on port `8080` by default; set `APP_PORT` to change the host port. **Before starting**, reconcile the database password in `docker-compose.yml`: the app currently uses an empty root password, while the MySQL service sets the root password to `root_password`. Set the app's `DB_PASSWORD` to `root_password` (or configure both services with your own matching credentials). Do not expose these development credentials publicly.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+After both services start, initialize the schema and development accounts:
 
-## Security Vulnerabilities
+```bash
+docker compose exec app php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Compose persists MySQL data in the `mysql_data` volume. To stop the services:
 
-## License
+```bash
+docker compose down
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Testing
+
+Run the Laravel unit and feature test suites with PHPUnit:
+
+```bash
+php artisan test
+```
+
+Browser-based tests are described in `playwright.config.ts`, but Playwright and its test scripts are not currently included in `package.json`. Install and configure `@playwright/test` before attempting to run the E2E suite.
+
+## Architecture
+
+The application is organized by responsibility:
+
+- `app/Models/` — Eloquent models and relationships.
+- `app/Enums/` — domain values such as quiz status and user role.
+- `app/Repositories/` — persistence queries and repository contracts.
+- `app/Services/` — quiz, question, answer-option, and assessment workflows.
+- `app/DTOs/` — structured assessment result data.
+- `app/Livewire/` and `resources/views/livewire/` — Livewire/Volt pages, forms, and actions with Blade views.
+- `routes/` — web, public, admin, and authentication route definitions.
+- `database/migrations/`, `database/factories/`, and `database/seeders/` — schema and development data.
+- `tests/` — PHPUnit unit and feature tests. A Playwright configuration exists, but the E2E test dependency and scripts are not currently set up.
+
+Repository and service layers keep data access and business workflows out of the presentation views. Assessment correctness and scores are calculated server-side.
