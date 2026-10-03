@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Quiz;
+use App\Services\Assessment\QuizAttemptService;
 use App\Services\Quiz\QuizService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -12,6 +13,13 @@ new #[Layout('layouts.public')] class extends Component
     public function mount(string $slug, QuizService $service): void
     {
         $this->quiz = $service->findPublishedBySlug($slug)->loadCount('questions');
+    }
+
+    public function start(QuizAttemptService $service): void
+    {
+        $attempt = $service->start($this->quiz, auth()->user());
+
+        $this->redirectRoute('quizzes.take', ['slug' => $this->quiz->slug, 'attempt' => $attempt->id], navigate: true);
     }
 }; ?>
 
@@ -32,9 +40,10 @@ new #[Layout('layouts.public')] class extends Component
         @endif
 
         <div class="mt-6 border-t border-gray-100 pt-6">
-            <a href="#" class="inline-flex items-center justify-center rounded-md bg-gray-800 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <button type="button" wire:click="start"
+                class="inline-flex items-center justify-center rounded-md bg-gray-800 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 {{ __('Start Assessment') }}
-            </a>
+            </button>
         </div>
     </div>
 </div>

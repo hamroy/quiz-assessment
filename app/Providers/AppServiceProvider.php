@@ -4,9 +4,13 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\AnswerOptionRepositoryInterface;
 use App\Repositories\Contracts\QuestionRepositoryInterface;
+use App\Repositories\Contracts\QuizAnswerRepositoryInterface;
+use App\Repositories\Contracts\QuizAttemptRepositoryInterface;
 use App\Repositories\Contracts\QuizRepositoryInterface;
 use App\Repositories\AnswerOptionRepository;
 use App\Repositories\QuestionRepository;
+use App\Repositories\QuizAnswerRepository;
+use App\Repositories\QuizAttemptRepository;
 use App\Repositories\QuizRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +34,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AnswerOptionRepositoryInterface::class,
             AnswerOptionRepository::class,
+        );
+
+        $this->app->bind(
+            QuizAttemptRepositoryInterface::class,
+            QuizAttemptRepository::class,
+        );
+
+        $this->app->bind(
+            QuizAnswerRepositoryInterface::class,
+            QuizAnswerRepository::class,
         );
     }
 
