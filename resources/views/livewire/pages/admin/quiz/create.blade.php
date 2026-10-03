@@ -18,54 +18,52 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div>
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 class="font-semibold text-xl mb-6">Create Quiz</h2>
+<div class="p-4 sm:p-6 lg:p-8">
+    <div class="mb-4">
+        <a href="{{ route('admin.quizzes.index') }}" wire:navigate class="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">
+            &larr; {{ __('Back to Quizzes') }}
+        </a>
+    </div>
 
-                    <form wire:submit="save">
-                        <!-- Title -->
-                        <div>
-                            <x-input-label for="title" :value="__('Title')" />
-                            <x-text-input wire:model="form.title" id="title" class="block mt-1 w-full" type="text" name="title" required autofocus />
-                            <x-input-error :messages="$errors->get('form.title')" class="mt-2" />
-                        </div>
+    <div class="card p-6 sm:p-8">
+        <h2 class="mb-6 text-lg font-semibold text-gray-900">{{ __('Create Quiz') }}</h2>
 
-                        <!-- Description -->
-                        <div class="mt-4">
-                            <x-input-label for="description" :value="__('Description')" />
-                            <textarea wire:model="form.description" id="description" name="description" rows="4"
-                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"></textarea>
-                            <x-input-error :messages="$errors->get('form.description')" class="mt-2" />
-                        </div>
-
-                        <!-- Status -->
-                        <div class="mt-4">
-                            <x-input-label for="status" :value="__('Status')" />
-                            <select wire:model="form.status" id="status" name="status"
-                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                @foreach (QuizStatus::cases() as $case)
-                                    <option value="{{ $case->value }}">{{ ucfirst($case->value) }}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error :messages="$errors->get('form.status')" class="mt-2" />
-                        </div>
-
-                        <div class="flex items-center justify-end mt-6">
-                            <a href="{{ route('admin.quizzes.index') }}" wire:navigate
-                                class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                {{ __('Cancel') }}
-                            </a>
-
-                            <x-primary-button class="ms-4">
-                                {{ __('Save') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
-                </div>
+        <form wire:submit="save" class="space-y-6">
+            <!-- Title -->
+            <div>
+                <x-input-label for="title" :value="__('Title')" />
+                <x-text-input wire:model="form.title" id="title" class="mt-1 block w-full" type="text" name="title" required autofocus />
+                <x-input-error :messages="$errors->get('form.title')" class="mt-2" />
             </div>
-        </div>
+
+            <!-- Description -->
+            <div>
+                <x-input-label for="description" :value="__('Description')" />
+                <textarea wire:model="form.description" id="description" name="description" rows="4"
+                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"></textarea>
+                <x-input-error :messages="$errors->get('form.description')" class="mt-2" />
+            </div>
+
+            <!-- Status -->
+            <div>
+                <x-input-label for="status" :value="__('Status')" />
+                <select wire:model="form.status" id="status" name="status"
+                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500">
+                    @foreach (QuizStatus::cases() as $case)
+                        <option value="{{ $case->value }}">{{ ucfirst($case->value) }}</option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('form.status')" class="mt-2" />
+            </div>
+
+            <div class="flex items-center justify-end gap-3 border-t border-gray-100 pt-6">
+                <a href="{{ route('admin.quizzes.index') }}" wire:navigate class="btn-secondary">
+                    {{ __('Cancel') }}
+                </a>
+                <button type="submit" class="btn-primary">
+                    {{ __('Save') }}
+                </button>
+            </div>
+        </form>
     </div>
 </div>

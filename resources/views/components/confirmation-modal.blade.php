@@ -10,7 +10,7 @@
 $variantClasses = match ($variant) {
     'danger' => 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
     'warning' => 'bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500',
-    'primary' => 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500',
+    'primary' => 'bg-brand-600 hover:bg-brand-700 focus:ring-brand-500',
     'info' => 'bg-sky-600 hover:bg-sky-700 focus:ring-sky-500',
     default => 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
 };

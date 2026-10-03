@@ -31,45 +31,47 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="py-12">
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <div class="mb-6 flex items-center justify-between">
-                <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ __('Users') }}</h1>
-                <a href="{{ route('admin.users.create') }}" wire:navigate class="rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700">{{ __('Create User') }}</a>
-            </div>
+<div class="p-4 sm:p-6 lg:p-8">
+    <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-gray-900">{{ __('Users') }}</h2>
+        <a href="{{ route('admin.users.create') }}" wire:navigate class="btn-primary">{{ __('Create User') }}</a>
+    </div>
 
-            @if ($error)
-                <p class="mb-4 text-sm text-red-600">{{ $error }}</p>
-            @endif
+    @if ($error)
+        <p class="mb-4 text-sm text-red-600">{{ $error }}</p>
+    @endif
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead><tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase">{{ __('Name') }}</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase">{{ __('Email') }}</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase">{{ __('Role') }}</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase">{{ __('Actions') }}</th>
-                    </tr></thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse ($users as $user)
-                            <tr>
-                                <td class="px-4 py-3">{{ $user->name }}</td>
-                                <td class="px-4 py-3">{{ $user->email }}</td>
-                                <td class="px-4 py-3">{{ ucfirst($user->role->value) }}</td>
-                                <td class="px-4 py-3">
-                                    <a href="{{ route('admin.users.edit', $user) }}" wire:navigate class="text-indigo-600">{{ __('Edit') }}</a>
-                                    <button type="button" wire:click="delete({{ $user->id }})" wire:confirm="{{ __('Delete this user?') }}" class="ms-3 text-red-600">{{ __('Delete') }}</button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">{{ __('No users found.') }}</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-4">{{ $users->links() }}</div>
+    <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Name') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Email') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Role') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse ($users as $user)
+                        <tr>
+                            <td class="px-4 py-3 text-sm text-gray-900">{{ $user->name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">{{ $user->email }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">{{ ucfirst($user->role->value) }}</td>
+                            <td class="px-4 py-3 text-sm font-medium">
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="{{ route('admin.users.edit', $user) }}" wire:navigate class="text-brand-600 hover:text-brand-700">{{ __('Edit') }}</a>
+                                    <button type="button" wire:click="delete({{ $user->id }})" wire:confirm="{{ __('Delete this user?') }}" class="text-red-600 hover:text-red-700">{{ __('Delete') }}</button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">{{ __('No users found.') }}</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
+        <div class="border-t border-gray-100 px-4 py-3">{{ $users->links() }}</div>
     </div>
 </div>
