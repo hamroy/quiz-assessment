@@ -3,6 +3,7 @@
 namespace App\Services\Quiz;
 
 use App\Enums\QuizStatus;
+use App\Enums\QuizType;
 use App\Models\Quiz;
 use App\Repositories\Contracts\QuizRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -21,7 +22,8 @@ final class QuizService
             'title' => $data['title'],
             'slug' => $this->uniqueSlug($data['title']),
             'description' => $data['description'] ?? null,
-            'status' => $data['status'] ?? QuizStatus::Draft->value,
+            'type' => $data['type'] ?? QuizType::General->value,
+            'status' => QuizStatus::Draft->value,
         ]);
     }
 
@@ -30,7 +32,7 @@ final class QuizService
         $payload = [
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
-            'status' => $data['status'] ?? $quiz->status,
+            'type' => $data['type'] ?? $quiz->type,
         ];
 
         if ($payload['title'] !== $quiz->title) {

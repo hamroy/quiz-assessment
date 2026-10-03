@@ -34,13 +34,14 @@ class QuizCreateTest extends TestCase
             ->test('pages.admin.quiz.create')
             ->set('form.title', 'My First Quiz')
             ->set('form.description', 'A sample quiz')
-            ->set('form.status', 'draft')
+            ->set('form.type', 'stress')
             ->call('save')
             ->assertRedirect(route('admin.quizzes.index'));
 
         $this->assertDatabaseHas('quizzes', [
             'title' => 'My First Quiz',
             'slug' => 'my-first-quiz',
+            'type' => 'stress',
             'status' => 'draft',
         ]);
     }
@@ -54,14 +55,14 @@ class QuizCreateTest extends TestCase
             ->assertHasErrors(['form.title' => 'required']);
     }
 
-    public function test_status_must_be_valid(): void
+    public function test_type_must_be_valid(): void
     {
         Livewire::actingAs(User::factory()->admin()->create())
             ->test('pages.admin.quiz.create')
             ->set('form.title', 'Valid Title')
-            ->set('form.status', 'invalid')
+            ->set('form.type', 'invalid')
             ->call('save')
-            ->assertHasErrors(['form.status']);
+            ->assertHasErrors(['form.type']);
     }
 
     public function test_duplicate_title_is_rejected(): void
@@ -73,7 +74,7 @@ class QuizCreateTest extends TestCase
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.create')
             ->set('form.title', 'Same Title')
-            ->set('form.status', 'draft')
+            ->set('form.type', 'general')
             ->call('save')
             ->assertHasErrors(['form.title' => 'unique']);
 

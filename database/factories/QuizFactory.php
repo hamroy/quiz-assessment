@@ -15,6 +15,7 @@ class QuizFactory extends Factory
             'title' => fake()->sentence(3),
             'slug' => fake()->slug(),
             'description' => fake()->optional()->paragraph(),
+            'type' => fake()->randomElement(['general', 'stress', 'anxiety', 'mbti', 'disc', 'big_five']),
             'status' => fake()->randomElement(['draft', 'published', 'archived']),
             'published_at' => fake()->optional()->dateTimeThisYear(),
         ];

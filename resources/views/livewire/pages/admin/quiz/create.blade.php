@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\QuizStatus;
+use App\Enums\QuizType;
 use App\Livewire\Forms\QuizForm;
 use App\Services\Quiz\QuizService;
 use Livewire\Attributes\Layout;
@@ -44,16 +44,16 @@ new #[Layout('layouts.app')] class extends Component
                 <x-input-error :messages="$errors->get('form.description')" class="mt-2" />
             </div>
 
-            <!-- Status -->
+            <!-- Type -->
             <div>
-                <x-input-label for="status" :value="__('Status')" />
-                <select wire:model="form.status" id="status" name="status"
+                <x-input-label for="type" :value="__('Type')" />
+                <select wire:model="form.type" id="type" name="type"
                     class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500">
-                    @foreach (QuizStatus::cases() as $case)
-                        <option value="{{ $case->value }}">{{ ucfirst($case->value) }}</option>
+                    @foreach (QuizType::cases() as $case)
+                        <option value="{{ $case->value }}">{{ $case->label() }}</option>
                     @endforeach
                 </select>
-                <x-input-error :messages="$errors->get('form.status')" class="mt-2" />
+                <x-input-error :messages="$errors->get('form.type')" class="mt-2" />
             </div>
 
             <div class="flex items-center justify-end gap-3 border-t border-gray-100 pt-6">

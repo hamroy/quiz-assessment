@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Forms;
 
-use App\Enums\QuizStatus;
+use App\Enums\QuizType;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -12,7 +12,7 @@ class QuizForm extends Form
 
     public string $description = '';
 
-    public string $status = 'draft';
+    public string $type = 'general';
 
     public ?int $quizId = null;
 
@@ -21,7 +21,7 @@ class QuizForm extends Form
         return [
             'title' => ['required', 'string', 'max:255', Rule::unique('quizzes', 'title')->ignore($this->quizId)],
             'description' => ['nullable', 'string'],
-            'status' => ['required', Rule::enum(QuizStatus::class)],
+            'type' => ['required', Rule::enum(QuizType::class)],
         ];
     }
 }

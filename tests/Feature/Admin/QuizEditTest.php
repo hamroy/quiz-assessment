@@ -43,13 +43,14 @@ class QuizEditTest extends TestCase
             'title' => 'Old Title',
             'slug' => 'old-title',
             'status' => 'draft',
+            'type' => 'general',
         ]);
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
             ->set('form.title', 'New Title')
             ->set('form.description', 'New description')
-            ->set('form.status', 'published')
+            ->set('form.type', 'mbti')
             ->call('save')
             ->assertRedirect(route('admin.quizzes.index'));
 
@@ -58,7 +59,8 @@ class QuizEditTest extends TestCase
             'title' => 'New Title',
             'slug' => 'new-title',
             'description' => 'New description',
-            'status' => 'published',
+            'type' => 'mbti',
+            'status' => 'draft',
         ]);
     }
 
@@ -84,18 +86,18 @@ class QuizEditTest extends TestCase
     public function test_editing_without_changing_title_keeps_slug(): void
     {
         $user = User::factory()->admin()->create();
-        $quiz = Quiz::factory()->create(['title' => 'Stable', 'slug' => 'stable']);
+        $quiz = Quiz::factory()->create(['title' => 'Stable', 'slug' => 'stable', 'type' => 'general']);
 
         Livewire::actingAs($user)
             ->test('pages.admin.quiz.edit', ['quiz' => $quiz->id])
             ->set('form.title', 'Stable')
-            ->set('form.status', 'archived')
+            ->set('form.type', 'disc')
             ->call('save');
 
         $this->assertDatabaseHas('quizzes', [
             'id' => $quiz->id,
             'slug' => 'stable',
-            'status' => 'archived',
+            'type' => 'disc',
         ]);
     }
 
