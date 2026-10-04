@@ -9,6 +9,7 @@ A monolithic web application for creating and taking quizzes. Administrators man
 - Public listing and detail pages for published quizzes.
 - Authenticated quiz attempts, answer persistence, server-side evaluation, and result review.
 - Role-based access for administrators and quiz-taking users.
+- Public read-only REST API for published quizzes, documented with Swagger UI.
 
 ## Tech Stack
 
@@ -18,6 +19,7 @@ A monolithic web application for creating and taking quizzes. Administrators man
 - Tailwind CSS and Vite
 - MySQL 8
 - Docker Compose (optional)
+- dedoc/scramble (OpenAPI documentation)
 
 ## Requirements
 
@@ -133,6 +135,19 @@ Compose persists MySQL data in the `mysql_data` volume. To stop the services:
 docker compose down
 ```
 
+### API Documentation
+
+The OpenAPI 3.1 specification is generated from the code with [Scramble](https://scramble.dedoc.co):
+
+- Swagger UI — [http://localhost:8000/docs/api](http://localhost:8000/docs/api)
+- OpenAPI JSON — [http://localhost:8000/docs/api.json](http://localhost:8000/docs/api.json)
+
+Both routes are available in the `local` environment. In any other environment they require an authenticated administrator; everyone else receives a 403. Tune the document title, version, and renderer in `config/scramble.php`, and export the spec to a file with:
+
+```bash
+php artisan scramble:export --path=public/openapi.json
+```
+
 ## Testing
 
 Run the Laravel unit and feature test suites with PHPUnit:
@@ -153,7 +168,7 @@ The application is organized by responsibility:
 - `app/Services/` — quiz, question, answer-option, and assessment workflows.
 - `app/DTOs/` — structured assessment result data.
 - `app/Livewire/` and `resources/views/livewire/` — Livewire/Volt pages, forms, and actions with Blade views.
-- `routes/` — web, public, admin, and authentication route definitions.
+- `routes/` — web, public, admin, and authentication route definitions, plus `api.php` for the public API.
 - `database/migrations/`, `database/factories/`, and `database/seeders/` — schema and development data.
 - `tests/` — PHPUnit unit and feature tests. A Playwright configuration exists, but the E2E test dependency and scripts are not currently set up.
 
