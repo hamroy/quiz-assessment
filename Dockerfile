@@ -7,6 +7,16 @@ FROM composer:2 AS vendor
 
 WORKDIR /app
 
+RUN apk add --no-cache \
+    freetype \
+    libjpeg-turbo \
+    libpng \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+
 COPY composer.json composer.lock ./
 
 RUN composer install \
@@ -46,7 +56,10 @@ FROM php:8.4-cli-alpine AS production
 WORKDIR /var/www/html
 
 RUN apk add --no-cache \
+    freetype \
     libpq \
+    libjpeg-turbo \
+    libpng \
     icu \
     libzip \
     oniguruma
@@ -54,11 +67,16 @@ RUN apk add --no-cache \
 RUN apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
     postgresql-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
     icu-dev \
     libzip-dev \
     oniguruma-dev
 
-RUN docker-php-ext-install \
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+    gd \
     pdo_mysql \
     intl \
     mbstring \
