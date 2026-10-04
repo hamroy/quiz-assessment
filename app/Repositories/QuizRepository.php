@@ -80,4 +80,14 @@ final class QuizRepository implements QuizRepositoryInterface
             ->latest()
             ->paginate(12);
     }
+
+    public function listPublishedFiltered(?string $type, int $perPage): LengthAwarePaginator
+    {
+        return Quiz::query()
+            ->withCount('questions')
+            ->where('status', QuizStatus::Published->value)
+            ->when($type, fn ($query) => $query->where('type', $type))
+            ->latest()
+            ->paginate($perPage);
+    }
 }

@@ -28,4 +28,9 @@ interface QuizRepositoryInterface
     public function list(array $with = [], array $withCount = []): LengthAwarePaginator;
 
     public function listPublished(array $with = [], array $withCount = []): LengthAwarePaginator;
+
+    /**
+     * Published quizzes, optionally filtered by type, with a caller-controlled page size.
+     */
+    public function listPublishedFiltered(?string $type, int $perPage): LengthAwarePaginator;
 }
