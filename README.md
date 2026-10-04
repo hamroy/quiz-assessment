@@ -139,7 +139,7 @@ docker compose down
 
 The OpenAPI 3.1 specification is generated from the code with [Scramble](https://scramble.dedoc.co):
 
-- Swagger UI — [http://localhost:8000/docs/api](http://localhost:8000/docs/api)
+- Scramble UI — [http://localhost:8000/docs/api](http://localhost:8000/docs/api)
 - OpenAPI JSON — [http://localhost:8000/docs/api.json](http://localhost:8000/docs/api.json)
 
 Both routes are available in the `local` environment. In any other environment they require an authenticated administrator; everyone else receives a 403. Tune the document title, version, and renderer in `config/scramble.php`, and export the spec to a file with:
